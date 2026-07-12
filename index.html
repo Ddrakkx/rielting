@@ -22,7 +22,7 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* Прибираємо некрасивий скролбар для кінематографічності */
+/* Прибираємо скролбар */
 html::-webkit-scrollbar { width: 0px; background: transparent; }
 html { -ms-overflow-style: none; scrollbar-width: none; }
 
@@ -67,16 +67,16 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
 .site-header {
   position: fixed;
   top: 0; left: 0; right: 0;
-  padding: 2rem 4rem;
+  padding: 1.5rem 3rem;
   display: flex; justify-content: space-between; align-items: center;
   z-index: 10;
-  mix-blend-mode: difference;
   color: #fff;
   pointer-events: none;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.8); /* Замінили mix-blend-mode для оптимізації */
 }
 .site-header .logo {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -91,12 +91,12 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
   border-radius: 50%;
 }
 .site-header .nav-menu {
-  display: flex; gap: 2.5rem;
+  display: flex; gap: 2rem;
 }
 .site-header .nav-menu a {
   color: #fff;
   text-decoration: none;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   pointer-events: auto;
@@ -149,7 +149,7 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
   position: relative; z-index: 3;
   width: 100%; height: 100%;
   max-width: 1400px; margin: 0 auto;
-  padding: 0 5rem;
+  padding: 0 3rem;
   pointer-events: none;
 }
 
@@ -157,15 +157,15 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
   position: absolute;
   top: 50%;
   transform: translateY(-50%) translateX(50px);
-  max-width: 34rem;
+  max-width: 28rem;
   opacity: 0;
   visibility: hidden;
 }
-.text-block.left { left: 5rem; }
-.text-block.right { right: 5rem; text-align: right; transform: translateY(-50%) translateX(-50px); }
+.text-block.left { left: 3rem; }
+.text-block.right { right: 3rem; text-align: right; transform: translateY(-50%) translateX(-50px); }
 
 .text-eyebrow { 
-  font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase; 
+  font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; 
   color: var(--gold); margin-bottom: 1.5rem; display: block; 
   text-shadow: 0 2px 15px rgba(0,0,0,0.9);
   position: relative;
@@ -183,21 +183,21 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
 .text-block.is-active .text-eyebrow::before { width: 40px; }
 
 .text-title { 
-  font-size: clamp(2.2rem, 5vw, 4.5rem); line-height: 1.1; 
+  font-size: clamp(1.8rem, 4vw, 3.8rem); line-height: 1.1; 
   color: var(--cream); margin-bottom: 1.5rem; 
   font-weight: 500;
   text-shadow: 0 4px 40px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.8);
 }
 .text-desc { 
-  font-size: 1.05rem; line-height: 1.8; color: var(--cream-muted); 
+  font-size: 1rem; line-height: 1.8; color: var(--cream-muted); 
   text-shadow: 0 2px 20px rgba(0,0,0,0.95);
   font-weight: 300;
 }
 
 .scroll-indicator {
-  position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%);
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
   z-index: 4; color: var(--cream-muted);
-  font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase;
+  font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase;
   display: flex; flex-direction: column; align-items: center; gap: 1rem;
   opacity: 1;
 }
@@ -213,20 +213,20 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   text-align: center; opacity: 0; visibility: hidden; padding: 2rem;
 }
-.finale-sub { font-size: 1rem; color: var(--gold); letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 1.5rem; font-family: 'Inter', sans-serif; font-weight: 400; }
-.finale-title { font-size: clamp(2.8rem, 7vw, 6rem); color: var(--cream); margin-bottom: 4rem; font-weight: 500; line-height: 1.1; }
+.finale-sub { font-size: 0.9rem; color: var(--gold); letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 1.5rem; font-family: 'Inter', sans-serif; font-weight: 400; }
+.finale-title { font-size: clamp(2.2rem, 6vw, 5rem); color: var(--cream); margin-bottom: 4rem; font-weight: 500; line-height: 1.1; }
 .finale-details { 
-  display: flex; gap: 6rem; margin-bottom: 4rem; 
+  display: flex; gap: 4rem; margin-bottom: 4rem; 
   border-top: 1px solid rgba(201, 169, 97, 0.2); 
   border-bottom: 1px solid rgba(201, 169, 97, 0.2); 
   padding: 2.5rem 4rem; 
 }
-.detail-item .label { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cream-muted); margin-bottom: 0.5rem; }
-.detail-item .value { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--cream); font-weight: 500; }
+.detail-item .label { font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cream-muted); margin-bottom: 0.5rem; }
+.detail-item .value { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--cream); font-weight: 500; }
 .btn-book { 
   display: inline-flex; align-items: center; gap: 0.8rem;
-  padding: 1.3rem 3.5rem; background: transparent; color: var(--gold); 
-  border: 1px solid var(--gold); font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; cursor: pointer; 
+  padding: 1.2rem 3rem; background: transparent; color: var(--gold); 
+  border: 1px solid var(--gold); font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; cursor: pointer; 
   font-family: 'Inter', sans-serif; text-decoration: none; font-weight: 400; 
   transition: all 0.4s var(--ease-quiet);
   position: relative; overflow: hidden;
@@ -245,7 +245,18 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
   padding: 6rem 2rem;
   border-top: 1px solid rgba(201, 169, 97, 0.1);
 }
-.footer-text { text-align: center; color: var(--cream-muted); font-size: 0.85rem; letter-spacing: 0.15em; opacity: 0.6; }
+.footer-text { text-align: center; color: var(--cream-muted); font-size: 0.8rem; letter-spacing: 0.15em; opacity: 0.6; }
+
+/* Мобільна оптимізація */
+@media (max-width: 768px) {
+  .site-header { padding: 1rem 1.5rem; }
+  .site-header .nav-menu { gap: 1rem; }
+  .site-header .nav-menu a { font-size: 0.55rem; }
+  .text-layers { padding: 0 1.5rem; }
+  .text-block.left { left: 1.5rem; }
+  .text-block.right { right: 1.5rem; }
+  .finale-details { flex-direction: column; gap: 2rem; padding: 2rem; }
+}
 </style>
 </head>
 <body>
@@ -323,14 +334,28 @@ const section = document.getElementById("video-scroll-section");
 const preloader = document.getElementById('preloader');
 const preloaderFill = document.getElementById('preloaderFill');
 
+// ВАЖЛИВО: Якщо у тебе в папці frames не 1300 файлів, а наприклад 1298, 
+// зміни цифру нижче на 1298!
 const totalFrames = 1300; 
+const lastFrame = totalFrames - 1; // Масиви починаються з 0, тому останній кадр - 1299
+
 const frames = [];
 let loadedCount = 0;
 
-canvas.width = 1920;
-canvas.height = 1080;
-
-ctx.imageSmoothingEnabled = true;
+// ОПТИМІЗАЦІЯ ДЛЯ WINDOWS/TELEFONIV: 
+// Зменшуємо розмір Canvas для підвищення FPS.
+// На телефоні буде 720p, на комп'ютері 1280p (замість важких 1080p)
+function setCanvasSize() {
+  if (window.innerWidth < 768) {
+    canvas.width = 720;
+    canvas.height = 405;
+  } else {
+    canvas.width = 1280;
+    canvas.height = 720;
+  }
+  ctx.imageSmoothingEnabled = true;
+}
+setCanvasSize();
 
 for (let i = 1; i <= totalFrames; i++) {
   const img = new Image();
@@ -365,12 +390,16 @@ function initScrollLogic() {
       trigger: section,
       start: "top top",
       end: "+=6000",
-      scrub: true,
+      scrub: 1, // Додали плавну інерцію (1 секунда), щоб приховати микрофризи
       pin: true,
       anticipatePin: 1,
       invalidateOnRefresh: true,
       onUpdate: () => {
-        const frameIndex = Math.round(frameProxy.frame);
+        let frameIndex = Math.round(frameProxy.frame);
+        // Запобіжник: не даємо виходити за межі масиву
+        if (frameIndex < 0) frameIndex = 0;
+        if (frameIndex > lastFrame) frameIndex = lastFrame;
+        
         if (frames[frameIndex] && frames[frameIndex].complete) {
           ctx.drawImage(frames[frameIndex], 0, 0, canvas.width, canvas.height);
         }
@@ -378,13 +407,13 @@ function initScrollLogic() {
     }
   });
 
-  // --- МАПА СКРОЛУ ---
+  // --- МАПА СКРОЛУ (з lastFrame наприкінці) ---
 
   // 1. Старт: 0 -> 6s (0 -> 120 кадров)
   tl.to(frameProxy, { frame: 120, duration: 8, ease: "none" });
   tl.to("#scrollIndicator", { opacity: 0, duration: 1 }, 0);
 
-  // Пауза і Текст 1 (додаємо клас .is-active для лінії)
+  // Пауза і Текст 1
   tl.to(frameProxy, { frame: 120, duration: 1 }); 
   tl.to("#text1", { opacity: 1, x: 0, visibility: 'visible', duration: 1, onStart: () => document.getElementById('text1').classList.add('is-active') });
   tl.to(frameProxy, { frame: 120, duration: 3 });
@@ -417,8 +446,8 @@ function initScrollLogic() {
   // 6. Перехід до 53s (880 -> 1060 кадров)
   tl.to(frameProxy, { frame: 1060, duration: 5, ease: "none" });
 
-  // 7. Фінал: 53s -> 65s (1060 -> 1300 кадров)
-  tl.to(frameProxy, { frame: 1300, duration: 8, ease: "none" });
+  // 7. Фінал: 53s -> 65s (1060 -> lastFrame)
+  tl.to(frameProxy, { frame: lastFrame, duration: 8, ease: "none" });
 
   // Поява фінального екрану
   tl.to("#videoOverlay", { className: "video-overlay dark-blur", duration: 2 }, "-=4");
@@ -437,6 +466,12 @@ function initScrollLogic() {
         behavior: 'smooth'
       });
     });
+  });
+  
+  // Оновлюємо розмір Canvas при зміні орієнтації телефону
+  window.addEventListener('resize', () => {
+    setCanvasSize();
+    ScrollTrigger.refresh();
   });
 }
 </script>
