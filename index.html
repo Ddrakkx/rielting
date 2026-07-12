@@ -21,6 +21,11 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* Прибираємо некрасивий скролбар для кінематографічності */
+html::-webkit-scrollbar { width: 0px; background: transparent; }
+html { -ms-overflow-style: none; scrollbar-width: none; }
+
 html, body {
   background: var(--navy-deep);
   color: var(--cream);
@@ -35,23 +40,27 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
 .preloader {
   position: fixed; inset: 0; background: var(--navy-deep); z-index: 1000;
   display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 2rem;
-  transition: opacity 1000ms var(--ease-quiet), visibility 1000ms;
+  transition: opacity 1200ms var(--ease-quiet), visibility 1200ms;
 }
 .preloader.hidden { opacity: 0; visibility: hidden; }
 .preloader-text { 
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.5rem; 
+  font-size: 1.6rem; 
   letter-spacing: 0.1em; 
   color: var(--cream-muted); 
   font-weight: 400;
+  opacity: 0;
+  animation: fadeIn 1.5s var(--ease-quiet) forwards;
 }
+@keyframes fadeIn { to { opacity: 1; } }
+
 .preloader-text .drakx-font {
   color: var(--gold);
   font-weight: 500;
   font-style: italic;
   margin-left: 0.2em;
 }
-.preloader-bar { width: 180px; height: 1px; background: rgba(201, 169, 97, 0.15); overflow: hidden; }
+.preloader-bar { width: 180px; height: 1px; background: rgba(201, 169, 97, 0.15); overflow: hidden; opacity: 0; animation: fadeIn 1.5s var(--ease-quiet) 0.3s forwards; }
 .preloader-bar-fill { height: 100%; width: 0%; background: var(--gold); }
 
 /* ===== Header ===== */
@@ -67,10 +76,19 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
 }
 .site-header .logo {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 500;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.site-header .logo::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
 }
 .site-header .nav-menu {
   display: flex; gap: 2.5rem;
@@ -78,14 +96,23 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
 .site-header .nav-menu a {
   color: #fff;
   text-decoration: none;
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   pointer-events: auto;
   transition: opacity 0.3s;
   cursor: pointer;
+  position: relative;
 }
-.site-header .nav-menu a:hover { opacity: 0.6; }
+.site-header .nav-menu a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 1px;
+  background: #fff;
+  transition: width 0.4s var(--ease-quiet);
+}
+.site-header .nav-menu a:hover::after { width: 100%; }
 
 /* ===== Video Section ===== */
 #video-scroll-section {
@@ -113,9 +140,9 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
     linear-gradient(to right, rgba(10, 14, 26, 0.75) 0%, transparent 25%, transparent 75%, rgba(10, 14, 26, 0.75) 100%);
 }
 .video-overlay.dark-blur {
-  background: rgba(10, 14, 26, 0.94);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(10, 14, 26, 0.95);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
 }
 
 .text-layers {
@@ -138,26 +165,41 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
 .text-block.right { right: 5rem; text-align: right; transform: translateY(-50%) translateX(-50px); }
 
 .text-eyebrow { 
-  font-size: 0.75rem; letter-spacing: 0.35em; text-transform: uppercase; 
+  font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase; 
   color: var(--gold); margin-bottom: 1.5rem; display: block; 
   text-shadow: 0 2px 15px rgba(0,0,0,0.9);
+  position: relative;
 }
+.text-block.left .text-eyebrow::before, .text-block.right .text-eyebrow::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 0; height: 1px;
+  background: var(--gold);
+  transition: width 1.2s var(--ease-quiet) 0.3s;
+}
+.text-block.left .text-eyebrow::before { left: -50px; }
+.text-block.right .text-eyebrow::before { right: -50px; }
+.text-block.is-active .text-eyebrow::before { width: 40px; }
+
 .text-title { 
-  font-size: clamp(2.2rem, 5vw, 4.5rem); line-height: 1.05; 
+  font-size: clamp(2.2rem, 5vw, 4.5rem); line-height: 1.1; 
   color: var(--cream); margin-bottom: 1.5rem; 
   font-weight: 500;
   text-shadow: 0 4px 40px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.8);
 }
 .text-desc { 
-  font-size: 1.1rem; line-height: 1.7; color: var(--cream-muted); 
+  font-size: 1.05rem; line-height: 1.8; color: var(--cream-muted); 
   text-shadow: 0 2px 20px rgba(0,0,0,0.95);
+  font-weight: 300;
 }
 
 .scroll-indicator {
   position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%);
   z-index: 4; color: var(--cream-muted);
-  font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+  font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase;
   display: flex; flex-direction: column; align-items: center; gap: 1rem;
+  opacity: 1;
 }
 .scroll-line { width: 1px; height: 40px; background: var(--gold); animation: scrollPulse 2s ease-in-out infinite; }
 @keyframes scrollPulse {
@@ -165,23 +207,37 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
   50% { transform: scaleY(1); opacity: 1; }
 }
 
+/* Фінальний екран */
 .finale-screen {
   position: absolute; inset: 0; z-index: 5;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   text-align: center; opacity: 0; visibility: hidden; padding: 2rem;
 }
-.finale-title { font-size: clamp(2.8rem, 7vw, 6rem); color: var(--cream); margin-bottom: 1rem; font-weight: 500; }
-.finale-sub { font-size: 1.2rem; color: var(--gold); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 4rem; font-family: 'Inter', sans-serif; font-weight: 400; }
-.finale-details { display: flex; gap: 5rem; margin-bottom: 4rem; border-top: 1px solid rgba(201, 169, 97, 0.3); border-bottom: 1px solid rgba(201, 169, 97, 0.3); padding: 2.5rem 0; }
-.detail-item .label { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--cream-muted); margin-bottom: 0.5rem; }
-.detail-item .value { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--cream); font-weight: 500; }
-.btn-book { 
-  display: inline-block; padding: 1.3rem 3.5rem; background: var(--gold); color: var(--navy-deep); 
-  border: none; font-size: 0.8rem; letter-spacing: 0.25em; text-transform: uppercase; cursor: pointer; 
-  font-family: 'Inter', sans-serif; text-decoration: none; font-weight: 500; 
-  transition: background 0.3s, transform 0.3s var(--ease-quiet);
+.finale-sub { font-size: 1rem; color: var(--gold); letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 1.5rem; font-family: 'Inter', sans-serif; font-weight: 400; }
+.finale-title { font-size: clamp(2.8rem, 7vw, 6rem); color: var(--cream); margin-bottom: 4rem; font-weight: 500; line-height: 1.1; }
+.finale-details { 
+  display: flex; gap: 6rem; margin-bottom: 4rem; 
+  border-top: 1px solid rgba(201, 169, 97, 0.2); 
+  border-bottom: 1px solid rgba(201, 169, 97, 0.2); 
+  padding: 2.5rem 4rem; 
 }
-.btn-book:hover { background: var(--gold-light); transform: translateY(-3px); }
+.detail-item .label { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cream-muted); margin-bottom: 0.5rem; }
+.detail-item .value { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--cream); font-weight: 500; }
+.btn-book { 
+  display: inline-flex; align-items: center; gap: 0.8rem;
+  padding: 1.3rem 3.5rem; background: transparent; color: var(--gold); 
+  border: 1px solid var(--gold); font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; cursor: pointer; 
+  font-family: 'Inter', sans-serif; text-decoration: none; font-weight: 400; 
+  transition: all 0.4s var(--ease-quiet);
+  position: relative; overflow: hidden;
+}
+.btn-book::before {
+  content: ''; position: absolute; inset: 0; background: var(--gold);
+  transform: scaleX(0); transform-origin: left; transition: transform 0.4s var(--ease-quiet);
+  z-index: -1;
+}
+.btn-book:hover { color: var(--navy-deep); border-color: var(--gold); }
+.btn-book:hover::before { transform: scaleX(1); }
 
 .after-section {
   position: relative; z-index: 10;
@@ -189,7 +245,7 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
   padding: 6rem 2rem;
   border-top: 1px solid rgba(201, 169, 97, 0.1);
 }
-.footer-text { text-align: center; color: var(--cream-muted); font-size: 0.9rem; letter-spacing: 0.1em; }
+.footer-text { text-align: center; color: var(--cream-muted); font-size: 0.85rem; letter-spacing: 0.15em; opacity: 0.6; }
 </style>
 </head>
 <body>
@@ -256,7 +312,6 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
 
 <section class="after-section">
   <p class="footer-text">© 2024 Villa Sardinia. Усі права захищені.</p>
-  <p class="footer-text" style="margin-top:1rem;font-size:0.75rem"><a href="https://github.com/Ddrakkx/rielting" target="_blank" style="color:var(--gold);text-decoration:none;letter-spacing:0.15em">GitHub</a></p>
 </section>
 
 <script>
@@ -329,36 +384,35 @@ function initScrollLogic() {
   tl.to(frameProxy, { frame: 120, duration: 8, ease: "none" });
   tl.to("#scrollIndicator", { opacity: 0, duration: 1 }, 0);
 
-  // Пауза і Текст 1
+  // Пауза і Текст 1 (додаємо клас .is-active для лінії)
   tl.to(frameProxy, { frame: 120, duration: 1 }); 
-  tl.to("#text1", { opacity: 1, x: 0, visibility: 'visible', duration: 1 });
+  tl.to("#text1", { opacity: 1, x: 0, visibility: 'visible', duration: 1, onStart: () => document.getElementById('text1').classList.add('is-active') });
   tl.to(frameProxy, { frame: 120, duration: 3 });
-  tl.to("#text1", { opacity: 0, x: -50, duration: 1.5 });
+  tl.to("#text1", { opacity: 0, x: -50, duration: 1.5, onComplete: () => document.getElementById('text1').classList.remove('is-active') });
 
   // 2. Залет у вітальню: 6s -> 11s (120 -> 220 кадров)
   tl.to(frameProxy, { frame: 220, duration: 10, ease: "none" });
   tl.to(frameProxy, { frame: 220, duration: 1 });
-  tl.to("#text2", { opacity: 1, x: 0, visibility: 'visible', duration: 1 });
+  tl.to("#text2", { opacity: 1, x: 0, visibility: 'visible', duration: 1, onStart: () => document.getElementById('text2').classList.add('is-active') });
   tl.to(frameProxy, { frame: 220, duration: 4 });
-  tl.to("#text2", { opacity: 0, x: 50, duration: 1.5 });
+  tl.to("#text2", { opacity: 0, x: 50, duration: 1.5, onComplete: () => document.getElementById('text2').classList.remove('is-active') });
 
   // 3. Проліт коридором: 11s -> 24s (220 -> 480 кадров)
   tl.to(frameProxy, { frame: 480, duration: 4, ease: "none" });
 
   // 4. Майстер-спальня: 24s -> 28s (480 -> 560 кадров)
-  // БУЛО 520 (26с), СТАЛО 560 (28с) - тепер камера долетить до ліжка та дверей
   tl.to(frameProxy, { frame: 560, duration: 8, ease: "none" });
   tl.to(frameProxy, { frame: 560, duration: 2 }); 
-  tl.to("#text3", { opacity: 1, x: 0, visibility: 'visible', duration: 1 });
+  tl.to("#text3", { opacity: 1, x: 0, visibility: 'visible', duration: 1, onStart: () => document.getElementById('text3').classList.add('is-active') });
   tl.to(frameProxy, { frame: 560, duration: 3 });
-  tl.to("#text3", { opacity: 0, x: -50, duration: 1.5 });
+  tl.to("#text3", { opacity: 0, x: -50, duration: 1.5, onComplete: () => document.getElementById('text3').classList.remove('is-active') });
 
   // 5. Нижній ярус: 28s -> 44s (560 -> 880 кадров)
   tl.to(frameProxy, { frame: 880, duration: 8, ease: "none" });
   tl.to(frameProxy, { frame: 880, duration: 1 });
-  tl.to("#text4", { opacity: 1, x: 0, visibility: 'visible', duration: 1 });
+  tl.to("#text4", { opacity: 1, x: 0, visibility: 'visible', duration: 1, onStart: () => document.getElementById('text4').classList.add('is-active') });
   tl.to(frameProxy, { frame: 880, duration: 3 });
-  tl.to("#text4", { opacity: 0, x: 50, duration: 1.5 });
+  tl.to("#text4", { opacity: 0, x: 50, duration: 1.5, onComplete: () => document.getElementById('text4').classList.remove('is-active') });
 
   // 6. Перехід до 53s (880 -> 1060 кадров)
   tl.to(frameProxy, { frame: 1060, duration: 5, ease: "none" });
