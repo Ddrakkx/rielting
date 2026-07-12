@@ -83,6 +83,7 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
   text-transform: uppercase;
   pointer-events: auto;
   transition: opacity 0.3s;
+  cursor: pointer;
 }
 .site-header .nav-menu a:hover { opacity: 0.6; }
 
@@ -193,21 +194,24 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
 </head>
 <body>
 
+<!-- Екран завантаження -->
 <div class="preloader" id="preloader">
   <div class="preloader-text">made by <span class="drakx-font">𝓭𝓻𝓪𝓴𝔁</span></div>
   <div class="preloader-bar"><div class="preloader-bar-fill" id="preloaderFill"></div></div>
 </div>
 
+<!-- Шапка сайту (кнопки з data-scroll) -->
 <header class="site-header">
   <div class="logo">Villa Sardinia</div>
   <nav class="nav-menu">
-    <a href="#">Об'єкт</a>
-    <a href="#">Інтер'єр</a>
-    <a href="#">Локація</a>
-    <a href="#">Контакти</a>
+    <a href="#" data-scroll="0">Об'єкт</a>
+    <a href="#" data-scroll="1000">Інтер'єр</a>
+    <a href="#" data-scroll="3200">Локація</a>
+    <a href="#" data-scroll="6000">Контакти</a>
   </nav>
 </header>
 
+<!-- Головна секція з відео -->
 <section id="video-scroll-section">
   <canvas id="hero-canvas"></canvas>
 
@@ -273,13 +277,11 @@ let loadedCount = 0;
 canvas.width = 1920;
 canvas.height = 1080;
 
-// Вимкнули важке згладжування для максимальної швидкості
 ctx.imageSmoothingEnabled = true;
-// ctx.imageSmoothingQuality = 'medium'; // Прибрали 'high'
 
 for (let i = 1; i <= totalFrames; i++) {
   const img = new Image();
-  img.src = `frames/frame_${String(i).padStart(4, '0')}.jpg`; // Повернули JPG
+  img.src = `frames/frame_${String(i).padStart(4, '0')}.jpg`; 
   
   img.onload = () => {
     loadedCount++;
@@ -325,41 +327,66 @@ function initScrollLogic() {
 
   // --- МАПА СКРОЛУ ---
 
+  // 1. Старт: 0 -> 6s (0 -> 120 кадров)
   tl.to(frameProxy, { frame: 120, duration: 8, ease: "none" });
   tl.to("#scrollIndicator", { opacity: 0, duration: 1 }, 0);
 
+  // Пауза і Текст 1
   tl.to(frameProxy, { frame: 120, duration: 1 }); 
   tl.to("#text1", { opacity: 1, x: 0, visibility: 'visible', duration: 1 });
   tl.to(frameProxy, { frame: 120, duration: 3 });
   tl.to("#text1", { opacity: 0, x: -50, duration: 1.5 });
 
+  // 2. Залет у вітальню: 6s -> 11s (120 -> 220 кадров)
   tl.to(frameProxy, { frame: 220, duration: 10, ease: "none" });
   tl.to(frameProxy, { frame: 220, duration: 1 });
   tl.to("#text2", { opacity: 1, x: 0, visibility: 'visible', duration: 1 });
   tl.to(frameProxy, { frame: 220, duration: 4 });
   tl.to("#text2", { opacity: 0, x: 50, duration: 1.5 });
 
+  // 3. Проліт коридором: 11s -> 24s (220 -> 480 кадров)
   tl.to(frameProxy, { frame: 480, duration: 4, ease: "none" });
 
+  // 4. Майстер-спальня: 24s -> 26s (480 -> 520 кадров)
   tl.to(frameProxy, { frame: 520, duration: 8, ease: "none" });
-  tl.to(frameProxy, { frame: 520, duration: 1 });
+  // ЗБІЛЬШИЛИ ПАУЗУ З 1 ДО 2 (текст з'явиться на 1 секунду пізніше)
+  tl.to(frameProxy, { frame: 520, duration: 2 }); 
   tl.to("#text3", { opacity: 1, x: 0, visibility: 'visible', duration: 1 });
   tl.to(frameProxy, { frame: 520, duration: 3 });
   tl.to("#text3", { opacity: 0, x: -50, duration: 1.5 });
 
+  // 5. Нижній ярус: 26s -> 44s (520 -> 880 кадров)
   tl.to(frameProxy, { frame: 880, duration: 8, ease: "none" });
   tl.to(frameProxy, { frame: 880, duration: 1 });
   tl.to("#text4", { opacity: 1, x: 0, visibility: 'visible', duration: 1 });
   tl.to(frameProxy, { frame: 880, duration: 3 });
   tl.to("#text4", { opacity: 0, x: 50, duration: 1.5 });
 
+  // 6. Перехід до 53s (880 -> 1060 кадров)
   tl.to(frameProxy, { frame: 1060, duration: 5, ease: "none" });
 
+  // 7. Фінал: 53s -> 65s (1060 -> 1300 кадров)
   tl.to(frameProxy, { frame: 1300, duration: 8, ease: "none" });
 
+  // Поява фінального екрану
   tl.to("#videoOverlay", { className: "video-overlay dark-blur", duration: 2 }, "-=4");
   tl.to("#hero-canvas", { scale: 1.05, duration: 4, ease: "power1.out" }, "-=4");
   tl.to("#finaleScreen", { opacity: 1, visibility: 'visible', duration: 2 }, "-=3");
+
+  // --- ЛОГІКА КНОПОК В ШАПЦІ ---
+  const navLinks = document.querySelectorAll('.nav-menu a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault(); // Запобігаємо стандартному стрибку
+      const scrollTarget = parseInt(link.getAttribute('data-scroll'), 10);
+      
+      // Плавно скролимо до потрібної позиції
+      window.scrollTo({
+        top: scrollTarget,
+        behavior: 'smooth'
+      });
+    });
+  });
 }
 </script>
 
