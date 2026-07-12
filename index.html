@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Villa Sardinia — Преміальна нерухомість</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<style>
+:root {
+  --navy-deep: #0A0E1A;
+  --gold: #C9A961;
+  --gold-light: #D9BC7A;
+  --cream: #FFFFFF;
+  --cream-muted: #E0E0E0;
+  --ease-quiet: cubic-bezier(.22, 1, .36, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  background: var(--navy-deep);
+  color: var(--cream);
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
+
+/* ===== Preloader ===== */
+.preloader {
+  position: fixed; inset: 0; background: var(--navy-deep); z-index: 1000;
+  display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 2rem;
+  transition: opacity 1000ms var(--ease-quiet), visibility 1000ms;
+}
+.preloader.hidden { opacity: 0; visibility: hidden; }
+.preloader-text { 
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; 
+  letter-spacing: 0.1em; 
+  color: var(--cream-muted); 
+  font-weight: 400;
+}
+.preloader-text .drakx-font {
+  color: var(--gold);
+  font-weight: 500;
+  font-style: italic;
+  margin-left: 0.2em;
+}
+.preloader-bar { width: 180px; height: 1px; background: rgba(201, 169, 97, 0.15); overflow: hidden; }
+.preloader-bar-fill { height: 100%; width: 0%; background: var(--gold); }
+
+/* ===== Header ===== */
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  padding: 2rem 4rem;
+  display: flex; justify-content: space-between; align-items: center;
+  z-index: 10;
+  mix-blend-mode: difference;
+  color: #fff;
+  pointer-events: none;
+}
+.site-header .logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.site-header .nav-menu {
+  display: flex; gap: 2.5rem;
+}
+.site-header .nav-menu a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  pointer-events: auto;
+  transition: opacity 0.3s;
+}
+.site-header .nav-menu a:hover { opacity: 0.6; }
+
+/* ===== Video Section ===== */
+#video-scroll-section {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#hero-canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  will-change: transform, filter;
+}
+
+.video-overlay {
+  position: absolute; inset: 0; z-index: 2;
+  pointer-events: none;
+  transition: background 1.2s var(--ease-quiet);
+  background: 
+    radial-gradient(ellipse at center, transparent 0%, rgba(10, 14, 26, 0.4) 80%, rgba(10, 14, 26, 0.9) 100%),
+    linear-gradient(to right, rgba(10, 14, 26, 0.75) 0%, transparent 25%, transparent 75%, rgba(10, 14, 26, 0.75) 100%);
+}
+.video-overlay.dark-blur {
+  background: rgba(10, 14, 26, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.text-layers {
+  position: relative; z-index: 3;
+  width: 100%; height: 100%;
+  max-width: 1400px; margin: 0 auto;
+  padding: 0 5rem;
+  pointer-events: none;
+}
+
+.text-block {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) translateX(50px);
+  max-width: 34rem;
+  opacity: 0;
+  visibility: hidden;
+}
+.text-block.left { left: 5rem; }
+.text-block.right { right: 5rem; text-align: right; transform: translateY(-50%) translateX(-50px); }
+
+.text-eyebrow { 
+  font-size: 0.75rem; letter-spacing: 0.35em; text-transform: uppercase; 
+  color: var(--gold); margin-bottom: 1.5rem; display: block; 
+  text-shadow: 0 2px 15px rgba(0,0,0,0.9);
+}
+.text-title { 
+  font-size: clamp(2.2rem, 5vw, 4.5rem); line-height: 1.05; 
+  color: var(--cream); margin-bottom: 1.5rem; 
+  font-weight: 500;
+  text-shadow: 0 4px 40px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.8);
+}
+.text-desc { 
+  font-size: 1.1rem; line-height: 1.7; color: var(--cream-muted); 
+  text-shadow: 0 2px 20px rgba(0,0,0,0.95);
+}
+
+.scroll-indicator {
+  position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%);
+  z-index: 4; color: var(--cream-muted);
+  font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+  display: flex; flex-direction: column; align-items: center; gap: 1rem;
+}
+.scroll-line { width: 1px; height: 40px; background: var(--gold); animation: scrollPulse 2s ease-in-out infinite; }
+@keyframes scrollPulse {
+  0%, 100% { transform: scaleY(0.3); transform-origin: top; opacity: 0.3; }
+  50% { transform: scaleY(1); opacity: 1; }
+}
+
+.finale-screen {
+  position: absolute; inset: 0; z-index: 5;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; opacity: 0; visibility: hidden; padding: 2rem;
+}
+.finale-title { font-size: clamp(2.8rem, 7vw, 6rem); color: var(--cream); margin-bottom: 1rem; font-weight: 500; }
+.finale-sub { font-size: 1.2rem; color: var(--gold); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 4rem; font-family: 'Inter', sans-serif; font-weight: 400; }
+.finale-details { display: flex; gap: 5rem; margin-bottom: 4rem; border-top: 1px solid rgba(201, 169, 97, 0.3); border-bottom: 1px solid rgba(201, 169, 97, 0.3); padding: 2.5rem 0; }
+.detail-item .label { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--cream-muted); margin-bottom: 0.5rem; }
+.detail-item .value { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--cream); font-weight: 500; }
+.btn-book { 
+  display: inline-block; padding: 1.3rem 3.5rem; background: var(--gold); color: var(--navy-deep); 
+  border: none; font-size: 0.8rem; letter-spacing: 0.25em; text-transform: uppercase; cursor: pointer; 
+  font-family: 'Inter', sans-serif; text-decoration: none; font-weight: 500; 
+  transition: background 0.3s, transform 0.3s var(--ease-quiet);
+}
+.btn-book:hover { background: var(--gold-light); transform: translateY(-3px); }
+
+.after-section {
+  position: relative; z-index: 10;
+  background: var(--navy-deep);
+  padding: 6rem 2rem;
+  border-top: 1px solid rgba(201, 169, 97, 0.1);
+}
+.footer-text { text-align: center; color: var(--cream-muted); font-size: 0.9rem; letter-spacing: 0.1em; }
+</style>
+</head>
+<body>
+
+<div class="preloader" id="preloader">
+  <div class="preloader-text">made by <span class="drakx-font">𝓭𝓻𝓪𝓴𝔁</span></div>
+  <div class="preloader-bar"><div class="preloader-bar-fill" id="preloaderFill"></div></div>
+</div>
+
+<header class="site-header">
+  <div class="logo">Villa Sardinia</div>
+  <nav class="nav-menu">
+    <a href="#">Об'єкт</a>
+    <a href="#">Інтер'єр</a>
+    <a href="#">Локація</a>
+    <a href="#">Контакти</a>
+  </nav>
+</header>
+
+<section id="video-scroll-section">
+  <canvas id="hero-canvas"></canvas>
+
+  <div class="video-overlay" id="videoOverlay"></div>
+
+  <div class="text-layers">
+    <div class="text-block left" id="text1">
+      <span class="text-eyebrow">Точка 1 · Тераса</span>
+      <h2 class="text-title">Архітектура та локація</h2>
+      <p class="text-desc">Преміальна вілла на Сардинії. Розсувні скляні двері стирають межу між терасою та внутрішнім простором.</p>
+    </div>
+    <div class="text-block right" id="text2">
+      <span class="text-eyebrow">Точка 2 · Головна вітальня</span>
+      <h2 class="text-title">Панорамне скління та натуральний камінь</h2>
+      <p class="text-desc">Плавний розворот навколо обіднього столу відкриває вид на гори крізь панорамні вікна.</p>
+    </div>
+    <div class="text-block left" id="text3">
+      <span class="text-eyebrow">Точка 3 · Майстер-спальня</span>
+      <h2 class="text-title">Приватна зона з виходом у сад</h2>
+      <p class="text-desc">Індивідуальний вихід на балкон забезпечує усамітнення та прямий контакт із природою.</p>
+    </div>
+    <div class="text-block right" id="text4">
+      <span class="text-eyebrow">Точка 4 · Гостьова зона</span>
+      <h2 class="text-title">Автономний нижній рівень</h2>
+      <p class="text-desc">Простір для гостей або відпочинку. Стіна зі склоблоків створює унікальну гру світла протягом дня.</p>
+    </div>
+  </div>
+
+  <div class="finale-screen" id="finaleScreen">
+    <span class="finale-sub">Вілла продається</span>
+    <h2 class="finale-title">Ваша майбутня резиденція</h2>
+    <div class="finale-details">
+      <div class="detail-item"><div class="label">Площа</div><div class="value">420 м²</div></div>
+      <div class="detail-item"><div class="label">Ділянка</div><div class="value">15 соток</div></div>
+      <div class="detail-item"><div class="label">Ціна</div><div class="value">€ 2,450,000</div></div>
+    </div>
+    <a href="#" class="btn-book">Забронувати перегляд</a>
+  </div>
+
+  <div class="scroll-indicator" id="scrollIndicator">
+    <span>Гортайте вниз</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<section class="after-section">
+  <p class="footer-text">© 2024 Villa Sardinia. Усі права захищені.</p>
+</section>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+const canvas = document.getElementById("hero-canvas");
+const ctx = canvas.getContext("2d", { alpha: false }); // alpha: false дає великий приріст FPS
+const section = document.getElementById("video-scroll-section");
+const preloader = document.getElementById('preloader');
+const preloaderFill = document.getElementById('preloaderFill');
+
+const totalFrames = 1300; 
+const frames = [];
+let loadedCount = 0;
+
+canvas.width = 1920;
+canvas.height = 1080;
+
+// Вимкнули важке згладжування для максимальної швидкості
+ctx.imageSmoothingEnabled = true;
+// ctx.imageSmoothingQuality = 'medium'; // Прибрали 'high'
+
+for (let i = 1; i <= totalFrames; i++) {
+  const img = new Image();
+  img.src = `frames/frame_${String(i).padStart(4, '0')}.jpg`; // Повернули JPG
+  
+  img.onload = () => {
+    loadedCount++;
+    preloaderFill.style.width = (loadedCount / totalFrames) * 100 + '%';
+    if (loadedCount === totalFrames) {
+      preloader.classList.add('hidden');
+      initScrollLogic();
+    }
+  };
+  img.onerror = () => {
+    loadedCount++;
+    preloaderFill.style.width = (loadedCount / totalFrames) * 100 + '%';
+    if (loadedCount === totalFrames) {
+      preloader.classList.add('hidden');
+      initScrollLogic();
+    }
+  };
+  frames.push(img);
+}
+
+function initScrollLogic() {
+  ctx.drawImage(frames[0], 0, 0, canvas.width, canvas.height);
+
+  const frameProxy = { frame: 0 };
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: section,
+      start: "top top",
+      end: "+=6000",
+      scrub: true,
+      pin: true,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+      onUpdate: () => {
+        const frameIndex = Math.round(frameProxy.frame);
+        if (frames[frameIndex] && frames[frameIndex].complete) {
+          ctx.drawImage(frames[frameIndex], 0, 0, canvas.width, canvas.height);
+        }
+      }
+    }
+  });
+
+  // --- МАПА СКРОЛУ ---
+
+  tl.to(frameProxy, { frame: 120, duration: 8, ease: "none" });
+  tl.to("#scrollIndicator", { opacity: 0, duration: 1 }, 0);
+
+  tl.to(frameProxy, { frame: 120, duration: 1 }); 
+  tl.to("#text1", { opacity: 1, x: 0, visibility: 'visible', duration: 1 });
+  tl.to(frameProxy, { frame: 120, duration: 3 });
+  tl.to("#text1", { opacity: 0, x: -50, duration: 1.5 });
+
+  tl.to(frameProxy, { frame: 220, duration: 10, ease: "none" });
+  tl.to(frameProxy, { frame: 220, duration: 1 });
+  tl.to("#text2", { opacity: 1, x: 0, visibility: 'visible', duration: 1 });
+  tl.to(frameProxy, { frame: 220, duration: 4 });
+  tl.to("#text2", { opacity: 0, x: 50, duration: 1.5 });
+
+  tl.to(frameProxy, { frame: 480, duration: 4, ease: "none" });
+
+  tl.to(frameProxy, { frame: 520, duration: 8, ease: "none" });
+  tl.to(frameProxy, { frame: 520, duration: 1 });
+  tl.to("#text3", { opacity: 1, x: 0, visibility: 'visible', duration: 1 });
+  tl.to(frameProxy, { frame: 520, duration: 3 });
+  tl.to("#text3", { opacity: 0, x: -50, duration: 1.5 });
+
+  tl.to(frameProxy, { frame: 880, duration: 8, ease: "none" });
+  tl.to(frameProxy, { frame: 880, duration: 1 });
+  tl.to("#text4", { opacity: 1, x: 0, visibility: 'visible', duration: 1 });
+  tl.to(frameProxy, { frame: 880, duration: 3 });
+  tl.to("#text4", { opacity: 0, x: 50, duration: 1.5 });
+
+  tl.to(frameProxy, { frame: 1060, duration: 5, ease: "none" });
+
+  tl.to(frameProxy, { frame: 1300, duration: 8, ease: "none" });
+
+  tl.to("#videoOverlay", { className: "video-overlay dark-blur", duration: 2 }, "-=4");
+  tl.to("#hero-canvas", { scale: 1.05, duration: 4, ease: "power1.out" }, "-=4");
+  tl.to("#finaleScreen", { opacity: 1, visibility: 'visible', duration: 2 }, "-=3");
+}
+</script>
+
+</body>
+</html>
