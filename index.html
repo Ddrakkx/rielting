@@ -194,13 +194,11 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
 </head>
 <body>
 
-<!-- Екран завантаження -->
 <div class="preloader" id="preloader">
   <div class="preloader-text">made by <span class="drakx-font">𝓭𝓻𝓪𝓴𝔁</span></div>
   <div class="preloader-bar"><div class="preloader-bar-fill" id="preloaderFill"></div></div>
 </div>
 
-<!-- Шапка сайту (кнопки з data-scroll) -->
 <header class="site-header">
   <div class="logo">Villa Sardinia</div>
   <nav class="nav-menu">
@@ -211,7 +209,6 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
   </nav>
 </header>
 
-<!-- Головна секція з відео -->
 <section id="video-scroll-section">
   <canvas id="hero-canvas"></canvas>
 
@@ -265,7 +262,7 @@ h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
 gsap.registerPlugin(ScrollTrigger);
 
 const canvas = document.getElementById("hero-canvas");
-const ctx = canvas.getContext("2d", { alpha: false }); // alpha: false дає великий приріст FPS
+const ctx = canvas.getContext("2d", { alpha: false });
 const section = document.getElementById("video-scroll-section");
 const preloader = document.getElementById('preloader');
 const preloaderFill = document.getElementById('preloaderFill');
@@ -347,15 +344,15 @@ function initScrollLogic() {
   // 3. Проліт коридором: 11s -> 24s (220 -> 480 кадров)
   tl.to(frameProxy, { frame: 480, duration: 4, ease: "none" });
 
-  // 4. Майстер-спальня: 24s -> 26s (480 -> 520 кадров)
-  tl.to(frameProxy, { frame: 520, duration: 8, ease: "none" });
-  // ЗБІЛЬШИЛИ ПАУЗУ З 1 ДО 2 (текст з'явиться на 1 секунду пізніше)
-  tl.to(frameProxy, { frame: 520, duration: 2 }); 
+  // 4. Майстер-спальня: 24s -> 28s (480 -> 560 кадров)
+  // БУЛО 520 (26с), СТАЛО 560 (28с) - тепер камера долетить до ліжка та дверей
+  tl.to(frameProxy, { frame: 560, duration: 8, ease: "none" });
+  tl.to(frameProxy, { frame: 560, duration: 2 }); 
   tl.to("#text3", { opacity: 1, x: 0, visibility: 'visible', duration: 1 });
-  tl.to(frameProxy, { frame: 520, duration: 3 });
+  tl.to(frameProxy, { frame: 560, duration: 3 });
   tl.to("#text3", { opacity: 0, x: -50, duration: 1.5 });
 
-  // 5. Нижній ярус: 26s -> 44s (520 -> 880 кадров)
+  // 5. Нижній ярус: 28s -> 44s (560 -> 880 кадров)
   tl.to(frameProxy, { frame: 880, duration: 8, ease: "none" });
   tl.to(frameProxy, { frame: 880, duration: 1 });
   tl.to("#text4", { opacity: 1, x: 0, visibility: 'visible', duration: 1 });
@@ -377,10 +374,9 @@ function initScrollLogic() {
   const navLinks = document.querySelectorAll('.nav-menu a');
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
-      e.preventDefault(); // Запобігаємо стандартному стрибку
+      e.preventDefault();
       const scrollTarget = parseInt(link.getAttribute('data-scroll'), 10);
       
-      // Плавно скролимо до потрібної позиції
       window.scrollTo({
         top: scrollTarget,
         behavior: 'smooth'
